@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>SGI-ABS - Notas</title>
+  <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <h2>SGI - ABS</h2>
+    <a href="/">📊 Dashboard</a>
+    <a href="/notas.html" class="activo">📚 Gestión de Notas</a>
+    <a href="/practica.html">💼 Etapa Práctica</a>
+    <a href="/evidencias.html">🎓 Paz y Salvo</a>
+    <a href="/nuevo-estudiante.html">👤 Nuevo Estudiante</a>
+  </div>
+
+  <!-- CONTENIDO -->
+  <div class="main-content">
+    <h1>Gestión de Notas</h1>
+    
+    <!-- SELECTOR DE ESTUDIANTES (El cuadro azul) -->
+    <div class="card" style="margin-bottom: 2rem; background: #e0e7ff; border-left: 5px solid #1e3a8a;">
+      <label style="font-weight: bold; color: #1e3a8a;">Seleccione un Estudiante para consultar o calificar:</label>
+      <select id="selector-estudiante" style="margin-top: 10px; font-weight: bold; font-size: 1.1rem;">
+        <option value="">Cargando estudiantes...</option>
+      </select>
+    </div>
+
+    <!-- PANEL DE ESTADO (Oculto hasta elegir estudiante) -->
+    <div class="card" id="panel-estado" style="font-size: 1.1rem; display: none;">
+      Cargando estado...
+    </div>
+
+    <!-- SECCIÓN DE TRABAJO (Oculta hasta elegir estudiante) -->
+    <div class="grid" id="seccion-trabajo" style="display: none;">
+      
+      <!-- FORMULARIO -->
+      <div class="card">
+        <h3>Registrar Nueva Nota</h3>
+        <form id="form-nota">
+          <input type="hidden" id="id_estudiante_form">
+          
+          <label>Materia:</label>
+          <select id="id_materia" required>
+            <option value="">Seleccione la materia...</option>
+            <!-- Se llena dinámicamente -->
+          </select>
+          
+          <label>Periodo:</label>
+          <select id="id_periodo" required>
+            <option value="1">2025 - 1</option>
+            <option value="2">2025 - 2</option>
+            <option value="3" selected>2026 - 1 (Actual)</option>
+          </select>
+          
+          <label>Estado:</label>
+          <select id="estado_nota" required>
+            <option value="Aprobado">Aprobado</option>
+            <option value="No Aprobado">No Aprobado</option>
+            <option value="Habilita">Habilita</option>
+          </select>
+          
+          <label>Calificación:</label>
+          <input type="number" step="0.1" id="calificacion" placeholder="Ej: 4.5" required>
+          
+          <button type="submit" style="margin-top: 1rem;">Guardar Nota</button>
+        </form>
+      </div>
+
+      <!-- TABLA -->
+      <div class="card">
+        <h3>Historial Académico</h3>
+        <table>
+          <thead>
+            <tr><th>Materia</th><th>Intento</th><th>Estado</th><th>Nota</th></tr>
+          </thead>
+          <tbody id="tabla-notas"></tbody>
+        </table>
+      </div>
+      
+    </div>
+  </div>
+
+  <script src="/js/notas.js"></script>
+</body>
+</html>

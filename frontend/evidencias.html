@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>SGI-ABS - Paz y Salvo</title>
+  <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2>SGI - ABS</h2>
+    <a href="/">📊 Dashboard</a>
+    <a href="/notas.html">📚 Gestión de Notas</a>
+    <a href="/practica.html">💼 Etapa Práctica</a>
+    <a href="/evidencias.html" class="activo">🎓 Paz y Salvo</a>
+  </div>
+
+  <div class="main-content">
+    <h1>Paz y Salvo</h1>
+
+    <!-- SELECTOR DE ESTUDIANTES -->
+    <div class="card" style="margin-bottom: 2rem; background: #e0e7ff; border-left: 5px solid #1e3a8a;">
+      <label style="font-weight: bold; color: #1e3a8a;">Seleccione un Estudiante para revisar evidencias:</label>
+      <select id="selector-estudiante" style="margin-top: 10px; font-weight: bold; font-size: 1.1rem;">
+        <option value="">Cargando estudiantes...</option>
+      </select>
+    </div>
+
+    <div id="contenido-paz-salvo" style="display: none;">
+      <div class="card" id="panel-paz-salvo" style="margin-bottom: 2rem;">
+        <!-- Panel de estado -->
+      </div>
+
+      <div class="card">
+        <h3>Checklist de Evidencias</h3>
+        <table>
+          <thead>
+            <tr><th>Evidencia</th><th>Estado</th><th>Acción</th></tr>
+          </thead>
+          <tbody id="tabla-evidencias"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="/js/evidencias.js"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>SGI-ABS - Dashboard</title>
+  <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2>SGI - ABS</h2>
+    <a href="/" class="activo">📊 Dashboard</a>
+    <a href="/notas.html">📚 Gestión de Notas</a>
+    <a href="/practica.html">💼 Etapa Práctica</a>
+    <a href="/evidencias.html">🎓 Paz y Salvo</a>
+    <a href="/nuevo-estudiante.html">👤 Nuevo Estudiante</a>
+  </div>
+
+  <div class="main-content">
+    <h1>Panel de Control</h1>
+    <p style="margin-bottom: 2rem; color: #666;">Resumen general de la Institución Educativa ABS.</p>
+    
+    <!-- TARJETAS DE ESTADÍSTICAS -->
+    <div class="grid" style="margin-bottom: 2rem;">
+      <div class="card" style="text-align: center; border-top: 4px solid #1e3a8a;">
+        <h3 style="color: #666; font-size: 1rem;">Total Estudiantes</h3>
+        <h2 id="stat-total" style="font-size: 3rem; color: #1e3a8a; margin-top: 0.5rem;">0</h2>
+      </div>
+
+      <div class="card" style="text-align: center; border-top: 4px solid var(--success);">
+        <h3 style="color: #666; font-size: 1rem;">Estudiantes Limpios</h3>
+        <h2 id="stat-limpios" style="font-size: 3rem; color: var(--success); margin-top: 0.5rem;">0</h2>
+      </div>
+
+      <div class="card" style="text-align: center; border-top: 4px solid var(--danger);">
+        <h3 style="color: #666; font-size: 1rem;">Con Deuda Académica</h3>
+        <h2 id="stat-deudas" style="font-size: 3rem; color: var(--danger); margin-top: 0.5rem;">0</h2>
+      </div>
+
+      <div class="card" style="text-align: center; border-top: 4px solid var(--warning);">
+        <h3 style="color: #666; font-size: 1rem;">En Práctica</h3>
+        <h2 id="stat-practica" style="font-size: 3rem; color: var(--warning); margin-top: 0.5rem;">0</h2>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h3>📚 Gestión de Notas</h3>
+        <p style="margin: 1rem 0; color: #666;">Registra calificaciones y observa el estado académico.</p>
+        <a href="/notas.html"><button>Ir a Notas</button></a>
+      </div>
+
+      <div class="card">
+        <h3>💼 Etapa Práctica</h3>
+        <p style="margin: 1rem 0; color: #666;">Valida el paso a Práctica. Bloqueo automático si hay deudas.</p>
+        <a href="/practica.html"><button>Ir a Práctica</button></a>
+      </div>
+
+      <div class="card">
+        <h3>🎓 Paz y Salvo</h3>
+        <p style="margin: 1rem 0; color: #666;">Revisa el checklist de evidencias y emite el Paz y Salvo.</p>
+        <a href="/evidencias.html"><button>Ir a Evidencias</button></a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function cargarEstadisticas() {
+      const res = await fetch('/api/dashboard');
+      const data = await res.json();
+      
+      document.getElementById('stat-total').innerText = data.total_estudiantes;
+      document.getElementById('stat-limpios').innerText = data.limpios;
+      document.getElementById('stat-deudas').innerText = data.deudas;
+      document.getElementById('stat-practica').innerText = data.en_practica;
+    }
+    cargarEstadisticas();
+  </script>
+</body>
+</html>

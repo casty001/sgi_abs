@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>SGI-ABS - Nuevo Estudiante</title>
+  <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2>SGI - ABS</h2>
+    <a href="/">📊 Dashboard</a>
+    <a href="/notas.html">📚 Gestión de Notas</a>
+    <a href="/practica.html">💼 Etapa Práctica</a>
+    <a href="/evidencias.html">🎓 Paz y Salvo</a>
+    <a href="/nuevo-estudiante.html" class="activo">👤 Nuevo Estudiante</a>
+    <a href="/admin.html">⚙️ Admin Académica</a> <!-- NUEVO ENLACE -->
+  </div>
+
+  <div class="main-content">
+    <h1>Registrar Nuevo Estudiante</h1>
+    
+    <div class="card" style="max-width: 600px;">
+      <form id="form-nuevo-estudiante">
+        <label>Documento de Identidad:</label>
+        <input type="text" id="documento" placeholder="Ej: 1098765432" required>
+        
+        <label>Nombres:</label>
+        <input type="text" id="nombres" placeholder="Ej: Pedro" required>
+        
+        <label>Apellidos:</label>
+        <input type="text" id="apellidos" placeholder="Ej: Infante" required>
+        
+        <label>Correo Electrónico:</label>
+        <input type="email" id="correo" placeholder="Ej: pedro@abs.edu.co" required>
+        
+        <label>Programa Académico:</label>
+        <select id="id_programa" required>
+          <option value="">Cargando programas...</option>
+        </select>
+        
+        <button type="submit" style="margin-top: 1rem;">Crear Estudiante</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    async function cargarProgramas() {
+      const res = await fetch('/api/programas');
+      const programas = await res.json();
+      const select = document.getElementById('id_programa');
+      select.innerHTML = '<option value="">Seleccione un programa...</option>';
+      programas.forEach(p => {
+        select.innerHTML += `<option value="${p.id_programa}">${p.nombre_programa}</option>`;
+      });
+    }
+    cargarProgramas();
+
+    document.getElementById('form-nuevo-estudiante').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const body = {
+        documento: document.getElementById('documento').value,
+        nombres: document.getElementById('nombres').value,
+        apellidos: document.getElementById('apellidos').value,
+        correo: document.getElementById('correo').value,
+        id_programa: document.getElementById('id_programa').value
+      };
+
+      const res = await fetch('/api/nuevo-estudiante', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert('✅ ' + data.mensaje);
+        document.getElementById('form-nuevo-estudiante').reset();
+      } else {
+        alert('❌ Error: ' + data.error);
+      }
+    });
+  </script>
+</body>
+</html>

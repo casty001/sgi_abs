@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>SGI-ABS - Administración</title>
+  <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2>SGI - ABS</h2>
+    <a href="/">📊 Dashboard</a>
+    <a href="/notas.html">📚 Gestión de Notas</a>
+    <a href="/practica.html">💼 Etapa Práctica</a>
+    <a href="/evidencias.html">🎓 Paz y Salvo</a>
+    <a href="/nuevo-estudiante.html">👤 Nuevo Estudiante</a>
+    <a href="/admin.html" class="activo">⚙️ Admin Académica</a>
+  </div>
+
+  <div class="main-content">
+    <h1>Administración Académica</h1>
+    
+    <div class="grid">
+      <!-- FORMULARIO PROGRAMAS -->
+      <div class="card">
+        <h3>Crear Nuevo Programa</h3>
+        <form id="form-programa">
+          <label>Nombre del Programa:</label>
+          <input type="text" id="nombre_programa" placeholder="Ej: Técnico en Enfermería" required>
+          
+          <label>Código SENA / IES:</label>
+          <input type="text" id="codigo_sena" placeholder="Ej: SENA-123456" required>
+          
+          <label>Total Semestres:</label>
+          <input type="number" id="total_semestres" placeholder="Ej: 4" required>
+          
+          <button type="submit" style="margin-top: 1rem;">Crear Programa</button>
+        </form>
+      </div>
+
+      <!-- FORMULARIO MATERIAS -->
+      <div class="card">
+        <h3>Agregar Competencia / Materia</h3>
+        <form id="form-materia">
+          <label>Programa:</label>
+          <select id="id_programa_materia" required>
+            <option value="">Cargando programas...</option>
+          </select>
+
+          <label>Semestre / Bloque:</label>
+          <input type="number" id="semestre_bloque" placeholder="Ej: 1" required>
+
+          <label>Nombre de la Materia:</label>
+          <input type="text" id="nombre_materia" placeholder="Ej: Anatomía Básica" required>
+          
+          <label>Créditos / Horas:</label>
+          <input type="number" id="creditos" placeholder="Ej: 80" required>
+          
+          <button type="submit" style="margin-top: 1rem;">Agregar Materia</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function cargarProgramas() {
+      const res = await fetch('/api/programas');
+      const programas = await res.json();
+      const select = document.getElementById('id_programa_materia');
+      select.innerHTML = '<option value="">Seleccione un programa...</option>';
+      programas.forEach(p => {
+        select.innerHTML += `<option value="${p.id_programa}">${p.nombre_programa}</option>`;
+      });
+    }
+    cargarProgramas();
+
+    // Crear Programa
+    document.getElementById('form-programa').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const body = {
+        nombre_programa: document.getElementById('nombre_programa').value,
+        codigo_sena_o_ies: document.getElementById('codigo_sena').value,
+        total_semestres: document.getElementById('total_semestres').value
+      };
+      const res = await fetch('/api/admin/programas', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
+      });
+      const data = await res.json();
+      if (res.ok) { alert('✅ ' + data.mensaje); cargarProgramas(); } else { alert('❌ ' + data.error); }
+    });
+
+    // Crear Materia
+    document.getElementById('form-materia').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const body = {
+        id_programa: document.getElementById('id_programa_materia').value,
+        semestre_bloque: document.getElementById('semestre_bloque').value,
+        nombre_materia: document.getElementById('nombre_materia').value,
+        creditos_o_horas: document.getElementById('creditos').value
+      };
+      const res = await fetch('/api/admin/materias', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
+      });
+      const data = await res.json();
+      if (res.ok) { alert('✅ ' + data.mensaje); document.getElementById('form-materia').reset(); } else { alert('❌ ' + data.error); }
+    });
+  </script>
+</body>
+</html>
